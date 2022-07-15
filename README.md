@@ -2,6 +2,10 @@
 
 Simple run function to execute shell commands in Deno.
 
+Returns a Promise of what the command printed.
+
+The promise rejects with status if the command fails.
+
 ## Usage
 
 ```typescript
@@ -22,13 +26,13 @@ console.log(idLine);
 const remoteHost = "10.20.30.40";
 const remoteCommand = "ps -ef --forest";
 const remoteProcessTree: string = await run(["ssh", remoteHost, remoteCommand]);
+console.log(remoteProcessTree);
 
 // Supply STDIN to the command
 const contents = `# Remote file
 
 This will be the contents of the remote file.
 `;
-// In this case, ignore response string
 await run(
   ["ssh", remoteHost, "bash", "-c", "cat > remote_file.md"],
   { stdin: contents },
