@@ -16,6 +16,9 @@ export interface CommandFailure {
   stdout: string;
 }
 
+/**
+ * Extra options, to modify how the command runs.
+ */
 export interface RunOptions {
   /** If specified, will be supplied as STDIN to the command. */
   stdin?: string;
