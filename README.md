@@ -6,6 +6,10 @@ Returns a Promise of what the command printed.
 
 The promise rejects with status if the command fails.
 
+## API
+
+See the [documentation, generated from the latest release](https://doc.deno.land/https://deno.land/x/run_simple/mod.ts).
+
 ## Usage
 
 ```typescript
