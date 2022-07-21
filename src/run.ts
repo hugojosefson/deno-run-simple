@@ -24,6 +24,12 @@ export interface RunOptions {
   stdin?: string;
   /** Print extra details to STDERR; default to whether env variable `"VERBOSE"` has a truthy value, and `--allow-env` is enabled. */
   verbose?: boolean;
+  /** Which directory to run the command in. */
+  cwd?: string;
+  /** Environment variables to pass to the command. */
+  env?: {
+    [key: string]: string;
+  };
 }
 
 const defaultRunOptions: RunOptions = {
@@ -41,11 +47,13 @@ async function tryRun(
   if (options.verbose) {
     console.error(`
 ===============================================================================
-${j({ cmd, stdin: options.stdin })}
+${j({ cmd, options })}
 -------------------------------------------------------------------------------`);
   }
   const process = Deno.run({
     cmd,
+    cwd: options.cwd,
+    env: options.env,
     stdin: pipeStdIn ? "piped" : "null",
     stdout: "piped",
     stderr: "piped",
