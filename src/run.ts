@@ -17,6 +17,28 @@ export interface CommandFailure {
 }
 
 /**
+ * Actual Error the promise is rejected with, if the command exits with a non-zero exit code.
+ */
+export class CommandFailureError extends Error implements CommandFailure {
+  readonly cmd: string[];
+  readonly status: Deno.ProcessStatus;
+  readonly stderr: string;
+  readonly stdout: string;
+
+  constructor(commandFailure: CommandFailure, cmd: string[]) {
+    super(
+      `Command failed with exit code ${commandFailure.status.code}: ${
+        j(cmd, 0)
+      }`,
+    );
+    this.cmd = cmd;
+    this.status = commandFailure.status;
+    this.stderr = commandFailure.stderr;
+    this.stdout = commandFailure.stdout;
+  }
+}
+
+/**
  * Extra options, to modify how the command runs.
  */
 export interface RunOptions {
@@ -86,11 +108,11 @@ ${j({ cmd, options })}
     }
     return stdoutString;
   }
-  const reason: CommandFailure = {
+  const reason: CommandFailureError = new CommandFailureError({
     status,
     stderr: asString(stderr),
     stdout: asString(stdout),
-  };
+  }, cmd);
   return Promise.reject(reason);
 }
 
