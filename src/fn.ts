@@ -25,3 +25,17 @@ export function parseJsonSafe(input: string | unknown): string | unknown {
   }
   return input;
 }
+
+export function omit<T extends Partial<Record<K, unknown>>, K extends keyof T>(
+  obj: T,
+  omitKeys: K[],
+): Omit<T, K> {
+  const result: T = {} as T;
+  const keys: K[] = Object.keys(obj) as K[];
+  for (const key of keys) {
+    if (!omitKeys.includes(key)) {
+      result[key] = obj[key];
+    }
+  }
+  return result as Omit<T, K>;
+}

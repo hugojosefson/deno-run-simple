@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "test": "deno test --allow-run --allow-env=VERBOSE",
+    "all": "deno fmt && deno lint && deno check mod.ts example.ts && deno task test"
+  }
+}

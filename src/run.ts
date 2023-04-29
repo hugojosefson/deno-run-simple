@@ -1,4 +1,4 @@
-import { asString, isString, j, parseJsonSafe } from "./fn.ts";
+import { asString, isString, j, omit, parseJsonSafe } from "./fn.ts";
 import { weakEnvGet } from "./os.ts";
 
 /** Item in the command array. */
@@ -8,8 +8,10 @@ export type SimpleValue = string | number | boolean;
  * What the promise is rejected with, if the command exits with a non-zero exit code.
  */
 export interface CommandFailure {
-  /** {@link Deno.ProcessStatus} from the underlying {@link Deno.Process}. */
-  status: Deno.ProcessStatus;
+  /** The command that was run. */
+  cmd: string[];
+  /** {@link Deno.CommandOutput} from the underlying {@link Deno.ChildProcess}. */
+  output: Deno.CommandOutput;
   /** What the command printed to STDERR. */
   stderr: string;
   /** What the command printed to STDOUT (as far as it got). */
@@ -21,37 +23,30 @@ export interface CommandFailure {
  */
 export class CommandFailureError extends Error implements CommandFailure {
   readonly cmd: string[];
-  readonly status: Deno.ProcessStatus;
+  readonly output: Deno.CommandOutput;
   readonly stderr: string;
   readonly stdout: string;
 
-  constructor(commandFailure: CommandFailure, cmd: string[]) {
+  constructor(output: Deno.CommandOutput, cmd: string[]) {
     super(
-      `Command failed with exit code ${commandFailure.status.code}: ${
-        j(cmd, 0)
-      }`,
+      `Command failed with exit code ${output.code}: ${j(cmd, 0)}`,
     );
     this.cmd = cmd;
-    this.status = commandFailure.status;
-    this.stderr = commandFailure.stderr;
-    this.stdout = commandFailure.stdout;
+    this.output = output;
+    this.stderr = asString(output.stderr);
+    this.stdout = asString(output.stdout);
   }
 }
 
 /**
  * Extra options, to modify how the command runs.
  */
-export interface RunOptions {
+export interface RunOptions
+  extends Omit<Deno.CommandOptions, "args" | "stdin" | "stdout" | "stderr"> {
   /** If specified, will be supplied as STDIN to the command. */
   stdin?: string;
   /** Print extra details to STDERR; default to whether env variable `"VERBOSE"` has a truthy value, and `--allow-env` is enabled. */
   verbose?: boolean;
-  /** Which directory to run the command in. */
-  cwd?: string;
-  /** Environment variables to pass to the command. */
-  env?: {
-    [key: string]: string;
-  };
 }
 
 const defaultRunOptions: RunOptions = {
@@ -72,48 +67,39 @@ async function tryRun(
 ${j({ cmd, options })}
 -------------------------------------------------------------------------------`);
   }
-  const process = Deno.run({
-    cmd,
-    cwd: options.cwd,
-    env: options.env,
+  const [executable, ...args] = cmd;
+
+  const commandOptions: Deno.CommandOptions = {
+    ...omit(options, ["stdin", "verbose"]),
+    args,
     stdin: pipeStdIn ? "piped" : "null",
     stdout: "piped",
     stderr: "piped",
-  });
+  };
+  const command: Deno.Command = new Deno.Command(executable, commandOptions);
+  const process: Deno.ChildProcess = command.spawn();
 
   if (pipeStdIn) {
-    const stdinBuf = new TextEncoder().encode(options.stdin);
+    const stdinBuf: Uint8Array = new TextEncoder().encode(options.stdin);
+    const writer = process.stdin.getWriter();
     try {
-      await process.stdin?.write(stdinBuf);
+      await writer.write(stdinBuf);
     } finally {
-      process.stdin?.close();
+      await writer.close();
     }
   }
 
-  const [
-    status,
-    stdout,
-    stderr,
-  ] = await Promise.all([
-    process.status(),
-    process.output(),
-    process.stderrOutput(),
-  ]);
-  process.close();
+  const output: Deno.CommandOutput = await process.output();
 
-  if (status.success) {
-    const stdoutString = asString(stdout);
-    if (options.verbose) {
-      console.error(stdoutString);
-    }
-    return stdoutString;
+  if (!output.success) {
+    throw new CommandFailureError(output, cmd);
   }
-  const reason: CommandFailureError = new CommandFailureError({
-    status,
-    stderr: asString(stderr),
-    stdout: asString(stdout),
-  }, cmd);
-  return Promise.reject(reason);
+
+  const stdoutString = asString(output.stdout);
+  if (options.verbose) {
+    console.error(stdoutString);
+  }
+  return stdoutString;
 }
 
 /**
