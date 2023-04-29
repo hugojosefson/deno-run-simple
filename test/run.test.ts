@@ -1,10 +1,11 @@
 import { run } from "../mod.ts";
-import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 
 Deno.test("run: echo hello", async () => {
   const result = await run("echo hello");
   assertEquals(result, "hello");
 });
+
 Deno.test("run: false -> rejects", async () => {
   let didReject: boolean | undefined;
   try {
@@ -15,6 +16,7 @@ Deno.test("run: false -> rejects", async () => {
   }
   assertEquals(didReject, true);
 });
+
 Deno.test("run: false -> rejects with an Error", async () => {
   let didRejectWithError: boolean | undefined;
   try {

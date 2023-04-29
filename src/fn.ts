@@ -3,12 +3,14 @@ export function isString(s?: string | unknown): s is string {
 }
 
 const decoder = new TextDecoder();
+
 export function asString(buf: Uint8Array | null | undefined): string {
   if (!buf) {
     return "";
   }
   return decoder.decode(buf).trim();
 }
+
 export function j(obj: unknown, indentation = 2): string {
   return JSON.stringify(obj, null, indentation);
 }
