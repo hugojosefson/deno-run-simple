@@ -49,7 +49,7 @@ export interface RunOptions
   verbose?: boolean;
 }
 
-const defaultRunOptions: RunOptions = {
+export const defaultRunOptions: RunOptions = {
   verbose: !!await weakEnvGet("VERBOSE"),
 };
 
