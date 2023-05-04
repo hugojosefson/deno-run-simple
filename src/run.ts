@@ -1,4 +1,4 @@
-import { asString, isString, j, omit, parseJsonSafe } from "./fn.ts";
+import { asString, isString, isUint8Array, j, omit, parseJsonSafe } from "./fn.ts";
 import { weakEnvGet } from "./os.ts";
 
 /** Item in the command array. */
@@ -79,7 +79,7 @@ ${j({ cmd, options })}
   const command: Deno.Command = new Deno.Command(executable, commandOptions);
   const process: Deno.ChildProcess = command.spawn();
 
-  if (pipeStdIn) {
+  if (options.stdin && pipeStdIn) {
     const stdinBuf: Uint8Array = isString(options.stdin) ? new TextEncoder().encode(options.stdin) : options.stdin;
     const writer = process.stdin.getWriter();
     try {

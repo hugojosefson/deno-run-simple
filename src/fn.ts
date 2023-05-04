@@ -3,7 +3,7 @@ export function isString(s?: string | unknown): s is string {
 }
 
 export function isUint8Array(s?: Uint8Array | unknown): s is Uint8Array {
-  return typeof s === "Uint8Array";
+  return s instanceof Uint8Array;
 }
 
 const decoder = new TextDecoder();
