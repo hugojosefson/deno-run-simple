@@ -2,6 +2,10 @@ export function isString(s?: string | unknown): s is string {
   return typeof s === "string";
 }
 
+export function isUint8Array(s?: Uint8Array | unknown): s is Uint8Array {
+  return typeof s === "Uint8Array";
+}
+
 const decoder = new TextDecoder();
 
 export function asString(buf: Uint8Array | null | undefined): string {

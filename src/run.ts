@@ -44,7 +44,7 @@ export class CommandFailureError extends Error implements CommandFailure {
 export interface RunOptions
   extends Omit<Deno.CommandOptions, "args" | "stdin" | "stdout" | "stderr"> {
   /** If specified, will be supplied as STDIN to the command. */
-  stdin?: string;
+  stdin?: string | Uint8Array;
   /** Print extra details to STDERR; default to whether env variable `"VERBOSE"` has a truthy value, and `--allow-env` is enabled. */
   verbose?: boolean;
 }
@@ -59,7 +59,7 @@ async function tryRun(
 ): Promise<string> {
   options = { ...defaultRunOptions, ...options };
 
-  const pipeStdIn = isString(options.stdin);
+  const pipeStdIn = isString(options.stdin) || isUint8Array(options.stdin);
 
   if (options.verbose) {
     console.error(`
@@ -80,7 +80,7 @@ ${j({ cmd, options })}
   const process: Deno.ChildProcess = command.spawn();
 
   if (pipeStdIn) {
-    const stdinBuf: Uint8Array = new TextEncoder().encode(options.stdin);
+    const stdinBuf: Uint8Array = isString(options.stdin) ? new TextEncoder().encode(options.stdin) : options.stdin;
     const writer = process.stdin.getWriter();
     try {
       await writer.write(stdinBuf);
