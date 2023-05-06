@@ -2,6 +2,7 @@ import { run } from "../mod.ts";
 import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { CommandFailureError } from "../src/run.ts";
 import { testStdinAmount, testStdoutAmount } from "./test-data-amount.ts";
+import { testStdinBinary } from "./test-binary.ts";
 
 Deno.test("run: echo hello", async () => {
   const result = await run("echo hello");
@@ -70,3 +71,36 @@ testStdinAmount(128, true);
 testStdinAmount(256, true);
 testStdinAmount(512, true);
 testStdinAmount(1024, true);
+
+testStdinBinary(new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]));
+testStdinBinary(
+  new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]),
+);
+testStdinBinary(
+  new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+);
+testStdinBinary(
+  new Uint8Array([
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+  ]),
+);

@@ -43,3 +43,7 @@ export function omit<T extends Partial<Record<K, unknown>>, K extends keyof T>(
   }
   return result as Omit<T, K>;
 }
+
+export function hex1byte(byte: number): string {
+  return byte.toString(16).padStart(2, "0");
+}
