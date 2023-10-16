@@ -1,6 +1,6 @@
 import { run } from "../src/run.ts";
-import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
-import { format } from "https://deno.land/std@0.186.0/fmt/bytes.ts";
+import { assertEquals } from "https://deno.land/std@0.204.0/testing/asserts.ts";
+import { format } from "https://deno.land/std@0.204.0/fmt/bytes.ts";
 
 export function testStdoutAmount(mb: number, ignore = false) {
   const expected = mb * 1024 * 1024;

@@ -1,5 +1,5 @@
 import { run } from "../mod.ts";
-import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.204.0/testing/asserts.ts";
 import { CommandFailureError } from "../src/run.ts";
 import { testStdinAmount, testStdoutAmount } from "./test-data-amount.ts";
 import { testStdinBinary } from "./test-binary.ts";

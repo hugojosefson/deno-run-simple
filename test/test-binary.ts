@@ -1,5 +1,5 @@
 import { run, RunOptions } from "../src/run.ts";
-import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.204.0/testing/asserts.ts";
 import { hex1byte } from "../src/fn.ts";
 
 export function testStdinBinary(data: Uint8Array): void {
