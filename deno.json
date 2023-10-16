@@ -1,7 +1,7 @@
 {
   "tasks": {
     "test": "deno test --allow-run --allow-env=VERBOSE",
-    "udd": "deno run --allow-read=. --allow-write=. --allow-net --allow-run=deno https://deno.land/x/udd@0.8.2/main.ts --test='deno task test' $(find . -name '*.ts')",
+    "udd": "deno run --allow-read=. --allow-write=. --allow-net --allow-run=deno https://deno.land/x/udd@0.8.2/main.ts --test='deno task test' deno.json $(find . -name '*.ts')",
     "release": "deno task all && test -z \"$(git status --porcelain)\" && GITHUB_TOKEN=$(gh auth token) deno run --allow-env=GITHUB_TOKEN --allow-net=api.github.com --allow-run=bash https://deno.land/x/shipit@0.6.1/shipit.ts",
     "all": "deno fmt && deno lint && deno check mod.ts example.ts && deno task test"
   }
