@@ -1,5 +1,5 @@
-import { run } from "../mod.ts";
-import { assertEquals } from "https://deno.land/std@0.204.0/testing/asserts.ts";
+import { jsonlRun, run } from "../mod.ts";
+import { assertEquals } from "https://deno.land/std@0.204.0/assert/assert_equals.ts";
 import { CommandFailureError } from "../src/run.ts";
 import { testStdinAmount, testStdoutAmount } from "./test-data-amount.ts";
 import { testStdinBinary } from "./test-binary.ts";
@@ -45,6 +45,29 @@ Deno.test("run: false -> rejects with a CommandFailureError", async () => {
 Deno.test("run: cat -> returns stdin", async () => {
   const result = await run("cat", { stdin: "hello" });
   assertEquals(result, "hello");
+});
+
+Deno.test("jsonlRun: echo hello", async () => {
+  const result = await jsonlRun("echo hello");
+  assertEquals(result, ["hello"]);
+});
+
+/** example from https://jsonlines.org/examples/ */
+const jsonLinesString =
+  `{"name": "Gilbert", "wins": [["straight", "7♣"], ["one pair", "10♥"]]}
+{"name": "Alexa", "wins": [["two pair", "4♠"], ["two pair", "9♠"]]}
+{"name": "May", "wins": []}
+{"name": "Deloise", "wins": [["three of a kind", "5♣"]]}`;
+const jsonLines = [
+  { name: "Gilbert", wins: [["straight", "7♣"], ["one pair", "10♥"]] },
+  { name: "Alexa", wins: [["two pair", "4♠"], ["two pair", "9♠"]] },
+  { name: "May", wins: [] },
+  { name: "Deloise", wins: [["three of a kind", "5♣"]] },
+];
+
+Deno.test("jsonlRun: cat < jsonLinesString", async () => {
+  const result = await jsonlRun("cat", { stdin: jsonLinesString });
+  assertEquals(result, jsonLines);
 });
 
 testStdoutAmount(1);

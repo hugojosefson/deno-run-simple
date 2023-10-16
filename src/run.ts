@@ -144,3 +144,18 @@ export async function jsonRun<T>(
 ): Promise<T> {
   return parseJsonSafe(await run(command, options)) as T;
 }
+
+/**
+ * Runs a command, just like {@link jsonRun}, but treats each line of the response as a separate JSON object, and returns an array of them.
+ * @param command The command to run, as an array of strings, or as a single string. You do not need to quote arguments that contain spaces, when supplying the command as an array. If using the single string format, be careful with spaces.
+ * @param options {@link RunOptions} for the execution.
+ */
+export async function jsonlRun<T>(
+  command: string | SimpleValue[],
+  options: RunOptions = defaultRunOptions,
+): Promise<T[]> {
+  return (await run(command, options))
+    .split("\n")
+    .filter((line) => line.length > 0)
+    .map((line) => parseJsonSafe(line) as T);
+}
