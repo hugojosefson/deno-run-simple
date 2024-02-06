@@ -44,6 +44,26 @@ export function omit<T extends Partial<Record<K, unknown>>, K extends keyof T>(
   return result as Omit<T, K>;
 }
 
-export function hex1byte(byte: number): string {
-  return byte.toString(16).padStart(2, "0");
+type HexNibble =
+  | "0"
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "a"
+  | "b"
+  | "c"
+  | "d"
+  | "e"
+  | "f";
+export function hex1byte(byte: number): `${HexNibble}${HexNibble}` {
+  return (byte & 0xFF).toString(16).padStart(
+    2,
+    "0",
+  ) as `${HexNibble}${HexNibble}`;
 }
