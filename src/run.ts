@@ -114,7 +114,7 @@ ${j({ cmd, options })}
 /**
  * Runs command, returning a Promise for what the command prints to STDOUT. If the command exits with non-zero exit code, the promise rejects with a {@link CommandFailure}.
  * @param command The command to run, as an array of strings, or as a single string. You do not need to quote arguments that contain spaces, when supplying the command as an array. If using the single string format, be careful with spaces.
- * @param options Options for the execution.
+ * @param options Any {@link RunOptions} for the execution.
  */
 export async function run(
   command: string | SimpleValue[],
@@ -136,7 +136,7 @@ export async function run(
 /**
  * Runs a command, just like {@link run}, but parses the response as JSON if possible. Otherwise, returns it as-is.
  * @param command The command to run, as an array of strings, or as a single string. You do not need to quote arguments that contain spaces, when supplying the command as an array. If using the single string format, be careful with spaces.
- * @param options {@link RunOptions} for the execution.
+ * @param options Any {@link RunOptions} for the execution.
  */
 export async function jsonRun<T>(
   command: string | SimpleValue[],
@@ -148,7 +148,7 @@ export async function jsonRun<T>(
 /**
  * Runs a command, just like {@link jsonRun}, but treats each line of the response as a separate JSON object, and returns an array of them.
  * @param command The command to run, as an array of strings, or as a single string. You do not need to quote arguments that contain spaces, when supplying the command as an array. If using the single string format, be careful with spaces.
- * @param options {@link RunOptions} for the execution.
+ * @param options Any {@link RunOptions} for the execution.
  */
 export async function jsonlRun<T>(
   command: string | SimpleValue[],
