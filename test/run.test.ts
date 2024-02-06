@@ -73,7 +73,7 @@ Deno.test("jsonlRun: cat < jsonLinesString", async () => {
 testStdoutAmount(1);
 testStdoutAmount(128);
 testStdoutAmount(256);
-testStdoutAmount(384);
+testStdoutAmount(384, true);
 testStdoutAmount(448, true);
 testStdoutAmount(512 - 1, true);
 testStdoutAmount(512, true);
