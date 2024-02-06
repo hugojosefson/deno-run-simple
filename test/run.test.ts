@@ -1,4 +1,4 @@
-import { jsonlRun, run } from "../mod.ts";
+import { jsonArrayRun, jsonlRun, run } from "../mod.ts";
 import { assertEquals } from "https://deno.land/std@0.214.0/assert/assert_equals.ts";
 import { CommandFailureError } from "../src/run.ts";
 import { testStdinAmount, testStdoutAmount } from "./test-data-amount.ts";
@@ -127,3 +127,51 @@ testStdinBinary(
     20,
   ]),
 );
+
+Deno.test("jsonArrayRun: echo hello", async () => {
+  const result = await jsonArrayRun("echo hello");
+  assertEquals(result, ["hello"]);
+});
+
+Deno.test("jsonArrayRun: cat < jsonLinesString", async () => {
+  const result = await jsonArrayRun("cat", { stdin: jsonLinesString });
+  assertEquals(result, jsonLines);
+});
+
+const jsonArrayOfObjectsOnSingleLine = JSON.stringify(jsonLines);
+Deno.test("jsonArrayRun: cat < jsonArrayOfObjectsOnSingleLine", async () => {
+  const result = await jsonArrayRun("cat", {
+    stdin: jsonArrayOfObjectsOnSingleLine,
+  });
+  assertEquals(result, jsonLines);
+});
+
+const jsonArrayOfObjectsPrettyPrinted = JSON.stringify(jsonLines, null, 2);
+Deno.test("jsonArrayRun: cat < jsonArrayOfObjectsPrettyPrinted", async () => {
+  const result = await jsonArrayRun("cat", {
+    stdin: jsonArrayOfObjectsPrettyPrinted,
+  });
+  assertEquals(result, jsonLines);
+});
+
+const jsonArrayOfArrays = jsonLines.map((line) => [line.name, line.wins]);
+
+const jsonArrayOfArraysOnSingleLine = JSON.stringify(jsonArrayOfArrays);
+Deno.test("jsonArrayRun: cat < jsonArrayOfArraysOnSingleLine", async () => {
+  const result = await jsonArrayRun("cat", {
+    stdin: jsonArrayOfArraysOnSingleLine,
+  });
+  assertEquals(result, jsonArrayOfArrays);
+});
+
+const jsonArrayOfArraysPrettyPrinted = JSON.stringify(
+  jsonArrayOfArrays,
+  null,
+  2,
+);
+Deno.test("jsonArrayRun: cat < jsonArrayOfArraysPrettyPrinted", async () => {
+  const result = await jsonArrayRun("cat", {
+    stdin: jsonArrayOfArraysPrettyPrinted,
+  });
+  assertEquals(result, jsonArrayOfArrays);
+});

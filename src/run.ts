@@ -163,8 +163,8 @@ export async function jsonlRun<T>(
 /**
  * Runs a command, just like {@link jsonRun} or {@link jsonlRun}, and always returns an array.
  *
- * - If the output can be parsed as JSONL, then it will be returned as an array of objects.
  * - If the output looks like an array, and can be parsed as JSON, then it will be returned as that array.
+ * - If the output can be parsed as JSONL, then it will be returned as an array of objects.
  * - Otherwise, the output will be returned as a single-item array.
  *
  * @param command The command to run, as an array of strings, or as a single string. You do not need to quote arguments that contain spaces, when supplying the command as an array. If using the single string format, be careful with spaces. * @param options Any {@link RunOptions} for the execution.
@@ -181,23 +181,30 @@ export async function jsonArrayRun<
   options: RunOptions = defaultRunOptions,
 ): Promise<R> {
   const json: string = await run(command, options);
+
+  // if empty, return empty array
   if (!json) {
     return [] as R;
   }
 
+  // if one big array, then return that
+  try {
+    if (json.startsWith("[") && json.endsWith("]")) {
+      return JSON.parse(json);
+    }
+  } catch (_ignore) {
+    // intentional fall-through
+  }
+
+  // if not one big array, then see if we can parse as jsonl
   try {
     return parseAsJsonLinesOrThrow<R>(json);
   } catch (_ignore) {
-    // if not jsonl, then see if it's an array already, or at least return as a single item in an array
-    try {
-      if (json.startsWith("[") && json.endsWith("]")) {
-        return JSON.parse(json);
-      }
-    } catch (_ignore) {
-      // if not an array, then just return it as a single item in an array
-    }
-    return [parseJsonSafe(json)] as R;
+    // intentional fall-through
   }
+
+  // if not jsonl, at least return as a single item in an array
+  return [parseJsonSafe(json)] as R;
 }
 
 /**
