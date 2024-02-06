@@ -159,3 +159,54 @@ export async function jsonlRun<T>(
     .filter((line) => line.length > 0)
     .map((line) => parseJsonSafe(line) as T);
 }
+
+/**
+ * Runs a command, just like {@link jsonRun} or {@link jsonlRun}, and always returns an array.
+ *
+ * - If the output can be parsed as JSONL, then it will be returned as an array of objects.
+ * - If the output looks like an array, and can be parsed as JSON, then it will be returned as that array.
+ * - Otherwise, the output will be returned as a single-item array.
+ *
+ * @param command The command to run, as an array of strings, or as a single string. You do not need to quote arguments that contain spaces, when supplying the command as an array. If using the single string format, be careful with spaces. * @param options Any {@link RunOptions} for the execution.
+ * @param options Any {@link RunOptions} for the execution.
+ * @returns The output of the command, as an array.
+ * @template T Type of the array, or type of each item in the array.
+ * @template R Type of the return value.
+ */
+export async function jsonArrayRun<
+  T extends unknown[] | unknown,
+  R extends T extends unknown[] ? T : T[],
+>(
+  command: string | SimpleValue[],
+  options: RunOptions = defaultRunOptions,
+): Promise<R> {
+  const json: string = await run(command, options);
+  if (!json) {
+    return [] as R;
+  }
+
+  try {
+    return parseAsJsonLinesOrThrow<R>(json);
+  } catch (_ignore) {
+    // if not jsonl, then see if it's an array already, or at least return as a single item in an array
+    try {
+      if (json.startsWith("[") && json.endsWith("]")) {
+        return JSON.parse(json);
+      }
+    } catch (_ignore) {
+      // if not an array, then just return it as a single item in an array
+    }
+    return [parseJsonSafe(json)] as R;
+  }
+}
+
+/**
+ * Parses a string as JSONL, and returns an array of the parsed objects.
+ * @param json The JSONL string to parse.
+ * @returns An array of the parsed objects.
+ * @template R Type of the return value.
+ * @throws If any line of the JSONL string cannot be parsed as JSON.
+ */
+function parseAsJsonLinesOrThrow<R extends unknown[]>(json: string): R {
+  return json.split("\n").map((line) => JSON.parse(line)) as R;
+}
