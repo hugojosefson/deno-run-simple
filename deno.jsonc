@@ -1,0 +1,29 @@
+{
+  "name": "@hugojosefson/run-simple",
+  "version": "2.3.0",
+  "exports": {
+    ".": "./mod.ts",
+    "./example-usage": "./readme/example-usage.ts"
+  },
+  "tasks": {
+    "all": "                      deno fmt && deno lint && deno task check        && deno task readme && deno task test          && deno task coverage         ",
+    "all-reload": "               deno fmt && deno lint && deno task check-reload && deno task readme && deno task test --reload && deno task coverage --reload",
+    "check": "                    deno task foreach-file-no-json-yaml -- deno check          '{}'",
+    "check-reload": "             deno task foreach-file-no-json-yaml -- deno check --reload '{}'",
+    "test": "                     deno test --coverage --allow-run --allow-env=VERBOSE",
+    "coverage": "                 deno coverage",
+    "readme": "                   touch README.md && chmod +w README.md && ./readme/generate-readme.ts readme/README.md > README.md && deno fmt README.md; chmod -w README.md",
+    "release": "                  deno task all && test -z \"$(git status --porcelain)\" && GITHUB_TOKEN=$(gh auth token) deno run --allow-env=GITHUB_TOKEN --allow-net=api.github.com --allow-run=bash https://deno.land/x/shipit@0.6.1/shipit.ts",
+    "bump-deps": "                deno task forall-files-no-yaml -- deno run --allow-env --allow-read=.,$HOME/.cache/deno,$HOME/.local/share/deno-wasmbuild --allow-write=.,$HOME/.local/share/deno-wasmbuild --allow-run=git --allow-net jsr:@molt/cli@0.19.8 --commit --prefix=\"chore: \"",
+    "on-file-save": "             sh -c 'err=$(NO_COLOR=1 deno fmt \"$1\" 2>&1); if [ $? -eq 0 ] || [ \"$err\" != \"error: No target files found.\" ]; then echo \"$err\"; fi; if [ \"$(echo \"$1\" | cut -c 1-7)\" = \"readme/\" ]; then deno task readme; fi' -s",
+    "list-files": "               git ls-files | deno eval 'import{toText}from\"jsr:@std/streams@1.0.7\";console.log((await toText(Deno.stdin.readable)).split(\"\\n\").filter(f=>f.startsWith(\".github/workflows\")||/\\.((mj|j|t)sx?|jsonc?)$/.test(f)).filter(f=>{try{return !Deno.statSync(f).isDirectory}catch{}}).join(\"\\n\"))'",
+    "foreach-file-no-json-yaml": "deno task list-files | grep -viE '\\.(jsonc?|ya?ml)$' | sh -c 'xargs -I {}      -- \"$@\"'",
+    "forall-files-no-yaml": "     deno task list-files | grep -viE '\\.ya?ml$'          | sh -c 'xargs -d \"\\n\" -- \"$@\"'"
+  },
+  "lock": false,
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.6",
+    "@std/fmt": "jsr:@std/fmt@^1.0.3",
+    "@std/path": "jsr:@std/path@^1.0.7"
+  }
+}

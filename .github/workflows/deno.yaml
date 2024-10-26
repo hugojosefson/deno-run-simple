@@ -8,14 +8,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: denoland/setup-deno@v1
-      - run: deno test --allow-run
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+      - run: deno task test
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: denoland/setup-deno@v1
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
       - run: deno fmt --check
       - run: deno lint
-      - run: deno check *.ts
+      - run: deno task check

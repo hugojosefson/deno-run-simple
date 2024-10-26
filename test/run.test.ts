@@ -1,5 +1,5 @@
 import { jsonArrayRun, jsonlRun, run } from "../mod.ts";
-import { assertEquals } from "https://deno.land/std@0.214.0/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert";
 import { CommandFailureError } from "../src/run.ts";
 import { testStdinAmount, testStdoutAmount } from "./test-data-amount.ts";
 import { testStdinBinary } from "./test-binary.ts";
