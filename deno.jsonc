@@ -1,6 +1,6 @@
 {
   "name": "@hugojosefson/run-simple",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "exports": {
     ".": "./mod.ts",
     "./example-usage": "./readme/example-usage.ts"
