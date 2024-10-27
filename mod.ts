@@ -1,7 +1,7 @@
 /**
- * @module
  * This module exports the {@link run} function and its varieties, and the types
  * that they use.
+ * @module
  */
 
 export { run } from "./src/run.ts";
