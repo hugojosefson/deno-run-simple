@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [fork-version](https://github.com/eglavin/fork-version) for commit guidelines.
 
+## 2.3.7 (2024-10-27)
+
+### Other Changes
+
+- add module doc for example-usage
+  ([6d8f900](https://github.com/hugojosefson/deno-run-simple/commit/6d8f900281f7e3260154ace2dc944dfb62a38d00))
+
 ## 2.3.6 (2024-10-27)
 
 ### Other Changes
