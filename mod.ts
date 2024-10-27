@@ -1,3 +1,9 @@
+/**
+ * @module
+ * This module exports the {@link run} function and its varieties, and the types
+ * that they use.
+ */
+
 export { run } from "./src/run.ts";
 export type { RunOptions } from "./src/run.ts";
 export type { CommandFailure } from "./src/run.ts";
