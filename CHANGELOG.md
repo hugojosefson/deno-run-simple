@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [fork-version](https://github.com/eglavin/fork-version) for commit guidelines.
 
+## 2.3.8 (2024-10-27)
+
+### Other Changes
+
+- restore readme as main module doc
+  ([75e4d58](https://github.com/hugojosefson/deno-run-simple/commit/75e4d58a471268beb5b2815cec6fe1a2969c0721))
+
 ## 2.3.7 (2024-10-27)
 
 ### Other Changes
