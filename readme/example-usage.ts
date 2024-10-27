@@ -1,11 +1,7 @@
 #!/usr/bin/env -S deno run --allow-run=ls,id,ssh
 // example-usage.ts
-import { run } from "../mod.ts";
 
-/**
- * This example shows some ways to use the run function.
- * @module
- */
+import { run } from "../mod.ts";
 
 // Simple command
 const dir: string = await run("ls -l");

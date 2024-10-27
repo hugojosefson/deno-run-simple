@@ -28,12 +28,8 @@ deno add jsr:@hugojosefson/run-simple
 
 ```typescript
 // example-usage.ts
-import { run } from "@hugojosefson/run-simple";
 
-/**
- * This example shows some ways to use the run function.
- * @module
- */
+import { run } from "@hugojosefson/run-simple";
 
 // Simple command
 const dir: string = await run("ls -l");
