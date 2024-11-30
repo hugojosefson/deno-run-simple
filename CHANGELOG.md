@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [fork-version](https://github.com/eglavin/fork-version) for commit guidelines.
 
+## 2.3.12 (2024-11-30)
+
+### Other Changes
+
+- add version badge, switch to release status
+  ([670bb93](https://github.com/hugojosefson/deno-run-simple/commit/670bb935c265352f09ba807bd3ca29b4617f4afc))
+
 ## 2.3.11 (2024-11-30)
 
 ### Other Changes
