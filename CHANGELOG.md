@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [fork-version](https://github.com/eglavin/fork-version) for commit guidelines.
 
+## [2.3.9](https://github.com/hugojosefson/deno-run-simple/compare/2.3.8...2.3.9) (2024-11-30)
+
+### Other Changes
+
+- fix deno task all-reload
+  ([e262ec2](https://github.com/hugojosefson/deno-run-simple/commit/e262ec2e8f78a4cd7a77bf5b3583901c8d0b03c6))
+
 ## 2.3.8 (2024-10-27)
 
 ### Other Changes
