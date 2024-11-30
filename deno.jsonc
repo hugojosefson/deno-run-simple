@@ -6,8 +6,8 @@
     "./example-usage": "./readme/example-usage.ts"
   },
   "tasks": {
-    "all": "                      deno fmt && deno lint && deno task check        && deno task readme && deno task test          && deno task coverage         ",
-    "all-reload": "               deno fmt && deno lint && deno task check-reload && deno task readme && deno task test --reload && deno task coverage --reload",
+    "all": "                      deno fmt && deno lint && deno task check        && deno task readme && deno task test          && deno task coverage",
+    "all-reload": "               deno fmt && deno lint && deno task check-reload && deno task readme && deno task test --reload && deno task coverage",
     "check": "                    deno task foreach-file-no-json-yaml -- deno check          '{}'",
     "check-reload": "             deno task foreach-file-no-json-yaml -- deno check --reload '{}'",
     "test": "                     deno test --coverage --allow-run --allow-env=VERBOSE",
