@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [fork-version](https://github.com/eglavin/fork-version) for commit guidelines.
 
+## 2.3.11 (2024-11-30)
+
+### Other Changes
+
+- release using npm:fork-version
+  ([271ecbf](https://github.com/hugojosefson/deno-run-simple/commit/271ecbfcc878437a1a476a089f0f4dc71305fc66))
+
 ## 2.3.10 (2024-11-30)
 
 ### Other Changes
