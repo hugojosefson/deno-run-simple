@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [fork-version](https://github.com/eglavin/fork-version) for commit guidelines.
 
+## 2.3.10 (2024-11-30)
+
+### Other Changes
+
+- **release:** 2.3.9
+  ([163d584](https://github.com/hugojosefson/deno-run-simple/commit/163d5848a923abf328c5ea0c88f1f927c4a71d84))
+
 ## [2.3.9](https://github.com/hugojosefson/deno-run-simple/compare/2.3.8...2.3.9) (2024-11-30)
 
 ### Other Changes
