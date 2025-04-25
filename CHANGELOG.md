@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [fork-version](https://github.com/eglavin/fork-version) for commit guidelines.
 
+## 2.4.0 (2025-04-25)
+
+### Features
+
+- export CommandFailureError
+  ([869c9ca](https://github.com/hugojosefson/deno-run-simple/commit/869c9cadf86425fabb2258bdd3abb06b6fdd8c1b))
+
 ## 2.3.12 (2024-11-30)
 
 ### Other Changes
